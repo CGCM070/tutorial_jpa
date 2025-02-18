@@ -20,6 +20,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.List;
+
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
@@ -109,6 +111,87 @@ public class PoderesHeroesTest {
 
     }
 
+
+
+    @Test
+    @Order(3)
+    void desasociarHeroeDeMision() {
+
+        transactionTemplate.executeWithoutResult(transactionStatus -> {
+
+            // Buscar el heroe
+            Heroe heroe = heroeRepository.findById(3L).orElse(null);
+            if (heroe != null) {
+                // Desasociar el heroe de la misión
+                heroe.setMision(null);
+                // Guardar el heroe
+                heroeRepository.save(heroe);
+            }
+
+        });
+
+    }
+
+    @Test
+    @Order(4)
+    void asociarHeroeAMision() {
+
+        transactionTemplate.executeWithoutResult(transactionStatus -> {
+
+            // Buscar el heroe
+            Heroe heroe = heroeRepository.findById(3L).orElse(null);
+            if (heroe != null) {
+                //  misión
+                Mision mision = Mision.builder()
+                        .descripcion("Salvar el mundo2")
+                        .villano("Thanos2")
+                        .build();
+                if (mision != null) {
+                    // Asociar el heroe a la misión
+                    heroe.setMision(mision);
+                    // Asignar el heroe a la misión
+                    mision.getHeroes().add(heroe);
+                    // Guardar la misión
+                    mision = this.misionsRepository.save(mision);
+
+                    // Guardar el heroe
+                    heroeRepository.save(heroe);
+                }
+            }
+
+        });
+
+    }
+
+    @Test
+    @Order(5)
+    void eliminarHeroe() {
+
+        transactionTemplate.executeWithoutResult(transactionStatus -> {
+
+            // Buscar el heroe
+            Heroe heroe = heroeRepository.findById(3L).orElse(null);
+            if (heroe != null) {
+
+                // Desasociar la misión del héroe
+                if (heroe.getMision() != null) {
+                    heroe.setMision(null);
+                    heroeRepository.save(heroe);
+                }
+
+                // Desasociar los poderes del héroe
+                for (HeroeHasPoder heroeHasPoder : heroe.getPoderes()) {
+                    hasPoderRepository.delete(heroeHasPoder);
+                }
+
+                // Eliminar el héroe
+                heroeRepository.delete(heroe);
+
+            }
+
+        });
+
+    }
 
 
 
