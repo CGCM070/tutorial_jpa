@@ -86,8 +86,8 @@ public class RecetaIngredienteTests {
 
         RecetaHasIngrediente recetaIngrediente1 = RecetaHasIngrediente.builder()
                 .pk(new RecetaHasIngrediente.Pk())
-                .receta(recetaPaella)
-                .ingrediente(ingredienteArroz)
+//                .receta(recetaPaella)
+//                .ingrediente(ingredienteArroz)
                 .build();
 
         recetaIngrediente1.setReceta(recetaPaella);
@@ -96,8 +96,8 @@ public class RecetaIngredienteTests {
 
         RecetaHasIngrediente recetaIngrediente2 = RecetaHasIngrediente.builder()
                 .pk(new RecetaHasIngrediente.Pk())
-                .receta(recetaTortilla)
-                .ingrediente(ingredienteHuevo)
+//                .receta(recetaTortilla)
+//                .ingrediente(ingredienteHuevo)
                 .build();
         recetaIngrediente2.setReceta(recetaTortilla);
         recetaIngrediente2.setIngrediente(ingredienteHuevo);
