@@ -18,26 +18,33 @@ import java.util.Set;
 @Entity
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id", scope = Heroe.class)
-public class Heroe {
+        property = "id", scope = Receta.class)
+
+
+public class Receta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private long id;
+    private  Long id;
 
     @Column(length = 45)
     private String nombre;
+    private String descripcion;
 
-    @JsonFormat (pattern = "yyyy-mm-dd")
-    private LocalDateTime fechaNac;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDateTime creada;
+
 
     @ManyToOne
-    @ToString.Exclude
-    private Mision mision;
+    private Chef chef;
 
-    @OneToMany(mappedBy = "heroe")
+    @ManyToOne
+    private CategoriaReceta categoriaReceta;
+
+
+    @OneToMany (mappedBy = "receta")
     @Builder.Default
-    private Set<HeroeHasPoder> poderes = new HashSet<>();
+    private Set<RecetaHasIngrediente> recetaHasIngredientes = new HashSet<>();
 
 }

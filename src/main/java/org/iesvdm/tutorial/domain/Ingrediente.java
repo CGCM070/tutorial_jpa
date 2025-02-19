@@ -1,12 +1,12 @@
 package org.iesvdm.tutorial.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,28 +16,27 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 @Entity
+
+
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id", scope = Heroe.class)
-public class Heroe {
+        property = "id", scope = Ingrediente.class)
+
+public class Ingrediente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     @Column(length = 45)
-    private String nombre;
+    private String item;
 
-    @JsonFormat (pattern = "yyyy-mm-dd")
-    private LocalDateTime fechaNac;
+    @Column(precision = 7, scale = 2)
+    private BigDecimal cantidad;
 
-    @ManyToOne
-    @ToString.Exclude
-    private Mision mision;
-
-    @OneToMany(mappedBy = "heroe")
+    @OneToMany(mappedBy = "ingrediente")
     @Builder.Default
-    private Set<HeroeHasPoder> poderes = new HashSet<>();
+    private Set<RecetaHasIngrediente> recetaHasIngredientes = new HashSet<>();
 
 }
